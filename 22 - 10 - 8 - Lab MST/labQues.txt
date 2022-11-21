@@ -1,0 +1,2 @@
+Question:
+to count the no. of occurances of an element in an array

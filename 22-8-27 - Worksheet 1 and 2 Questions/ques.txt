@@ -1,0 +1,3 @@
+1. Write a java program which prints all the real solutions of a quadratic equaion if Discriminant is negative display a message that there are no real solutions.
+
+2. Display fibo series in both loop and recursive function to print the nth term and series as well.
