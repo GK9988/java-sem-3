@@ -1,0 +1,186 @@
+                    -- packages
+create table detail(id int, name char(20), address varchar(20), salary int);
+insert into detail values(1,'rt','ttyuwe',20000);
+insert into detail values(2,'trt','tyuwe',40000);
+insert into detail values(3,'urt','uwe',25000);
+insert into detail values(4,'irt','yuwe',30000);
+insert into detail values(5,'ort','ruwe',37000);
+insert into detail values(6,'lrt','luwe',36000);
+CREATE OR REPLACE PACKAGE c_package AS
+-- Adds a customer
+PROCEDURE addCustomer(c_id detail.id%type,
+c_name detail.name%type,
+c_addr detail.address%type,
+c_sal detail.salary%type);
+-- Removes a customer
+PROCEDURE delCustomer(c_id detail.id%TYPE);
+--Lists all customers
+PROCEDURE listCustomer;
+END c_package;
+/
+CREATE OR REPLACE PACKAGE BODY c_package AS
+PROCEDURE addCustomer(c_id detail.id%type,
+c_name detail.name%type,
+c_addr detail.address%type,
+c_sal detail.salary%type)
+IS
+BEGIN
+INSERT INTO detail (id,name,address,salary)
+VALUES(c_id, c_name, c_addr, c_sal);
+END addCustomer;
+PROCEDURE delCustomer(c_id detail.id%type) IS
+BEGIN
+DELETE FROM detail
+WHERE id = c_id;
+
+END delCustomer;
+PROCEDURE listCustomer IS
+CURSOR c_customers is
+SELECT name FROM detail;
+TYPE c_list is TABLE OF detail.Name%type;
+name_list c_list := c_list();
+counter integer :=0;
+BEGIN
+FOR n IN c_customers LOOP
+counter := counter +1;
+name_list.extend;
+name_list(counter) := n.name;
+dbms_output.put_line('Customer(' ||counter|| ')'||name_list(counter));
+END LOOP;
+END listCustomer;
+END c_package;
+/
+DECLARE
+code detail.id%type:= 6;
+BEGIN
+c_package.addcustomer(7, 'Rajnish', 'Chennai', 3500);
+c_package.addcustomer(8, 'Subham', 'Delhi', 7500);
+c_package.listcustomer;
+c_package.delcustomer(code);
+c_package.listcustomer;
+END;
+/
+
+
+
+
+
+
+CURSOR->
+create table employee(
+id number,
+name varchar(30),
+salary int,
+address varchar(40));
+insert into employee values(1,'Harshit',100000,'Khanna');
+insert into employee values(2,'Hritik',13400,'Hamirpur');
+insert into employee values(3,'Nitin',50000,'Haryana');
+insert into employee values(4,'Bibek',10000,'Nepal');
+insert into employee values(5,'Apoorav',100000,':Ludhiana');
+insert into employee values(6,'Harsh',125000,'Ludhiana');
+
+--for implicit cursor
+Declare 
+total_rows Number(2);
+Begin
+update employee set salary = salary+500;
+if sql%notfound then
+dbms_output.put_line('No customer affected');
+else 
+total_rows := sql%rowcount;
+dbms_output.put_line(total_rows || ' rows affected');
+end if;
+
+--for explicit cursor
+DECLARE 
+c_id customers.id%type; 
+c_name customer.name%type; 
+c_addr customers.address%type; 
+CURSOR c_customers is 
+SELECT id, name, address FROM customers; 
+BEGIN 
+OPEN c_customers; 
+LOOP 
+FETCH c_customers into c_id, c_name, c_addr; 
+EXIT WHEN c_customers%notfound; 
+dbms_output.put_line(c_id || ' ' || c_name || ' ' || c_addr); 
+END LOOP; 
+CLOSE c_customers; 
+END; 
+
+
+
+;A
+
+
+TRIGGERS->
+CREATE TABLE emp(e_no number(10),ename char(50),esalary number(10),eaddress varchar(10)); 
+insert into emp values(1,'SUMIT',300000,'ALWAR'); 
+insert into emp values(2,'BIBEK',200000,'KHARAR'); 
+insert into emp values(3,'HARSH',400000,'LANDRAN');
+insert into emp values(4,'HARSHIT',500000,'KHANA'); 
+SELECT *FROM emp; 
+create or replace TRIGGER tab_emp
+before INSERT 
+ON emp
+for each row 
+BEGIN DBMS_OUTPUT.PUT_LINE('BEFORE INSERT OF' || NEW.ename); 
+END;
+INSERT INTO emp values(5,'CHETAN',34000,'LUDHIANA');
+explicit cursor->
+DECLARE 
+c_id customers.id%type; 
+c_name customer.name%type; 
+c_addr customers.address%type; 
+CURSOR c_customers is 
+SELECT id, name, address FROM customers; 
+BEGIN 
+OPEN c_customers; 
+LOOP 
+FETCH c_customers into c_id, c_name, c_addr; 
+EXIT WHEN c_customers%notfound; 
+dbms_output.put_line(c_id || ' ' || c_name || ' ' || c_addr); 
+END LOOP; 
+CLOSE c_customers; 
+END; 
+
+
+procedure>>>
+create or replace procedure factorial(n in number)
+is 
+           v number;
+begin
+
+       for i in reverse n..1
+ loop
+              v :=v*i;
+end loop;
+dbms_output.put_line(v);
+end;
+
+
+view<><
+
+
+CREATE VIEW view_name AS
+SELECT column1, column2, ...
+FROM table_name
+WHERE condition;
+create table college_info(college_code int primary key , college_name varchar(50),address varchar(50));
+insert into college_info values (211,'Cu','Punjab');
+insert into college_info values (212,'pu','Chandigarh');
+insert into college_info values (213,'Jgu','Hisar');
+insert into college_info values (214,'du','Delhi');
+insert into college_info values (215,'lpu','Jalandhar');
+create table faculty_info(college_code int ,Faculty_code int ,faculty_name varchar(200),qualification varchar(200),age int ,experrience int ,address varchar(200));
+insert into  faculty_info values(211,01,'Rishu','Mba',48,8,'punjab');
+insert into faculty_info values(212,02,'Aryan','M.tech',39,11,'delhi');
+insert into  faculty_info values(213,03,'varun','Mba',24,4,'himachal');
+insert into  faculty_info values(214,04,'Ritik','Mba',22,6,'una');
+insert into faculty_info values(215,05,'Adarsh','M.tech',50,12,'Dharmshala');
+select *from college_info;
+select *from faculty_info;
+select * from faculty_info where experrience>10 and qualification!='M.tech' ;
+select * from faculty_info where age>40 and address!='delhi';
+select *from faculty_info where experrience=10 and qualification!='M.tech';
+select *from faculty_info where address='delhi'and qualification!='M.tech';
